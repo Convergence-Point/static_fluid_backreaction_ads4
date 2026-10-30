@@ -105,6 +105,4 @@ python check_reduction.py           # checks the reduction to the Sturm-Liouvill
 
 - The W4 step uses an *unpivoted* UDL decomposition. The order of unknowns and equations matters (a zero
   pivot otherwise); the choice used in `star.py` is explained in `Star`/`unpack`.
-- Eq. (5) of the Lopes & Okawa draft has `ρ` where the Einstein equations give `P`; the code uses `P`
-  (see Part I of `docs/derivation.html`).
 - `docs/paper/` is git-ignored because the draft contains co-author comments.
