@@ -1,0 +1,14 @@
+[project]
+name = "static-ads"
+version = "0.1.0"
+description = "Static polytropic stars in AdS: W4 solver, radial stability and turning-point analysis"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "numpy>=2.2.6",
+    "scipy>=1.15.3",
+    "sympy>=1.14.0",
+]
+
+[tool.black]
+line-length = 110

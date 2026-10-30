@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Static perfect-fluid star in AdS: derivation of the profile equations</title>
+<script>
+  window.MathJax = { tex: { tags: 'ams', inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] } };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body { font-family: system-ui, sans-serif; line-height: 1.55; max-width: 52rem; margin: 2rem auto; padding: 0 1rem; color: #222; }
+  h1 { font-size: 1.6rem; } h2 { margin-top: 2.2rem; border-bottom: 1px solid #ccc; padding-bottom: .2rem; }
+  .box { border-left: 4px solid #2a7; background: #f2faf6; padding: .6rem 1rem; margin: 1rem 0; }
+  .warn { border-left-color: #c60; background: #fff6ec; }
+  table { border-collapse: collapse; margin: 1rem 0; }
+  th, td { border: 1px solid #bbb; padding: .3rem .7rem; text-align: left; }
+  code { background: #f3f3f3; padding: 0 .25em; }
+  .small { font-size: .9rem; color: #555; }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+
+<h1>Static perfect-fluid star in AdS: checking Eqs. (4) and (5)</h1>
+<p class="small">Part I (Sections 1–11): static profile equations. <a href="#part2">Part II (Sections 12–21)</a>: radial stability.</p>
+<p class="small">Source: Lopes &amp; Okawa, “Λ stars” (<code>Static_AdS.pdf</code>), Sec. II.A. All steps below were also checked
+symbolically with sympy (<code>derivation/static_background_check.py</code>).</p>
+
+<div class="box">
+<b>Result.</b> Eq. (4) is correct as printed. Eq. (5) is correct only with <b>P</b> in the bracket,
+\(1+\kappa_G l^2 P/2\), not \(1+\kappa_G l^2 \rho/2\). Section 8 then eliminates <i>P</i> and <i>P′</i> with the equation of state (Eq. 6) to get two ODEs for <i>g</i> and ρ.
+</div>
+
+<h2>1. Setup</h2>
+<p>Metric (Eq. 1), with conformal factor \(\Omega = l/\cos x\):</p>
+\[
+ds^2 = \frac{l^2}{\cos^2 x}\Big(-f^2dt^2 + g^2dx^2 + \sin^2x\,d\Omega_2^2\Big),
+\qquad f=f(x),\; g=g(x).
+\]
+<p>Field equations and matter (Eqs. 2, 3), with \(\Lambda=-3/l^2\):</p>
+\[
+G_{\mu\nu}+\Lambda g_{\mu\nu}=\kappa_G T_{\mu\nu},\qquad
+T_{\mu\nu}=(\rho+P)u_\mu u_\nu+P g_{\mu\nu},\qquad
+u^\mu=\Big(\frac{\cos x}{l\,f},0,0,0\Big).
+\]
+<p>The normalization is right: \(g_{tt}(u^t)^2 = -\frac{l^2f^2}{\cos^2x}\frac{\cos^2x}{l^2f^2}=-1\).
+In mixed components \(T^\mu{}_\nu=\mathrm{diag}(-\rho,P,P,P)\).</p>
+<p>Here and below, \(s=\sin x\), \(c=\cos x\), and a prime is \(d/dx\).</p>
+
+<h2>2. Christoffel symbols</h2>
+<p>The non-zero ones (up to the symmetry in the lower indices) are</p>
+\[
+\begin{aligned}
+\Gamma^t{}_{tx} &= \tan x + \frac{f'}{f}, &
+\Gamma^x{}_{tt} &= \frac{f}{g^2}\Big(f\tan x + f'\Big),\\[2pt]
+\Gamma^x{}_{xx} &= \tan x + \frac{g'}{g}, &
+\Gamma^x{}_{\theta\theta} &= -\frac{\tan x}{g^2},\qquad
+\Gamma^x{}_{\phi\phi} = -\frac{\sin^2\theta\,\tan x}{g^2},\\[2pt]
+\Gamma^\theta{}_{x\theta} &= \Gamma^\phi{}_{x\phi}=\frac{1}{\sin x\cos x}, &
+\Gamma^\theta{}_{\phi\phi} &= -\sin\theta\cos\theta,\qquad \Gamma^\phi{}_{\theta\phi}=\cot\theta .
+\end{aligned}
+\]
+<p>The \(\tan x\) terms come from the conformal factor, since \(\partial_x\ln\Omega=\tan x\).
+In particular \(\Gamma^t{}_{tx}=N'/N\) for the lapse \(N=l f/\cos x\), which is what makes the conservation law below simple.</p>
+
+<h2>3. Einstein tensor</h2>
+<p>From \(R^\mu{}_{\nu}=\partial_\lambda\Gamma^\lambda{}_{\mu\nu}-\partial_\nu\Gamma^\lambda{}_{\mu\lambda}+\Gamma\Gamma-\Gamma\Gamma\)
+and \(G^\mu{}_\nu=R^\mu{}_\nu-\tfrac12R\,\delta^\mu_\nu\), the diagonal mixed components are:</p>
+\[
+\begin{aligned}
+l^2\,G^t{}_t &= 1-\frac{1}{s^2}+\frac{2}{g^2}+\frac{1}{g^2s^2}-\frac{2c}{s}\frac{g'}{g^3},\\[4pt]
+l^2\,G^x{}_x &= 1+\frac{2}{g^2}-\frac{1}{s^2}+\frac{1}{g^2s^2}+\frac{2c}{s}\frac{f'}{f\,g^2},
+\end{aligned}
+\]
+<p>and \(G^\theta{}_\theta=G^\phi{}_\phi\) (a longer expression with \(f''\)). All off-diagonal components vanish, which is consistent with a static
+fluid, \(T_{tx}=0\).</p>
+<p><b>Sanity check:</b> empty AdS has \(f=g=1\). Then \(l^2G^t{}_t=l^2G^x{}_x=3\), so \(G^\mu{}_\nu=-\Lambda\delta^\mu_\nu\), as required.</p>
+
+<h2>4. The tt component gives Eq. (4)</h2>
+<p>\(G^t{}_t+\Lambda=\kappa_G T^t{}_t=-\kappa_G\rho\). Multiply by \(l^2\) and use \(l^2\Lambda=-3\):</p>
+\[
+\kappa_G l^2\rho \;-\; \frac{2\cos x}{g^3\sin x}\,g' \;-\; \csc^2x \;+\; \frac{2}{g^2} \;+\; \frac{1}{g^2\sin^2x} \;-\; 2 \;=\; 0 .
+\tag{4}
+\]
+<p>This is exactly the paper's Eq. (4). Checked numerically to machine precision with sympy.</p>
+
+<h2>5. The xx component gives \(f'/f\)</h2>
+<p>\(G^x{}_x+\Lambda=\kappa_G P\):</p>
+\[
+-2+\frac{2}{g^2}-\frac{1}{s^2}+\frac{1}{g^2s^2}+\frac{2c}{s}\frac{f'}{f\,g^2}=\kappa_G l^2P .
+\]
+<p>Solve for \(f'/f\), using \(2-\tfrac{2}{g^2}=\tfrac{2(g^2-1)}{g^2}\) and \(\tfrac{1}{s^2}(1-\tfrac1{g^2})=\tfrac{g^2-1}{g^2s^2}\):</p>
+\[
+\frac{f'}{f}=\frac{g^2\tan x}{2}\Big[\kappa_G l^2P+\frac{g^2-1}{g^2}\Big(2+\frac1{s^2}\Big)\Big]
+= \frac{\kappa_G l^2}{2}\,g^2\tan x\,P+(g^2-1)\frac{1+2s^2}{2sc}.
+\]
+<p>Adding \(\tan x=\dfrac{2s^2}{2sc}\) to both sides, the \(g\)-dependent part combines as
+\(\dfrac{(g^2-1)(1+2s^2)+2s^2}{2sc}=g^2\tan x+\dfrac{g^2-1}{2sc}\), so</p>
+\[
+\frac{f'}{f}+\tan x \;=\; g^2\tan x\Big(1+\frac{\kappa_G l^2P}{2}\Big)+\frac{g^2-1}{2\sin x\cos x}.
+\tag{$*$}
+\]
+<p>(Verified numerically at random points.)</p>
+
+<h2>6. Fluid conservation</h2>
+<p>The only non-trivial component of \(\nabla_\mu T^{\mu\nu}=0\) is \(\nu=x\):</p>
+\[
+\nabla_\mu T^{\mu x}
+=\frac{\cos^2x}{l^2g^2}\Big[P'+(\rho+P)\Big(\frac{f'}{f}+\tan x\Big)\Big]=0
+\;\;\Longrightarrow\;\;
+\frac{P'}{\rho+P}=-\Big(\frac{f'}{f}+\tan x\Big)=-\frac{N'}{N}.
+\]
+<p>This is the hydrostatic equilibrium condition for lapse \(N=lf/\cos x\). The \(\tan x\) must be included; leaving it out gives a wrong result.
+(The identity above was verified symbolically.)</p>
+
+<h2>7. Eq. (5)</h2>
+<p>Combining 5 and 6, i.e. inserting \((*)\):</p>
+\[
+\boxed{\;\frac{1}{\rho+P}\frac{dP}{dx}+g^2\tan x\Big(1+\frac{\kappa_G l^2\,P}{2}\Big)+\frac{g^2-1}{2\sin x\cos x}=0\;}
+\tag{5}
+\]
+<div class="box warn">
+<b>Discrepancy with the paper.</b> The paper prints \(\rho\) in place of \(P\) inside the parenthesis. The derivation gives \(P\)
+(\(T^x{}_x=P\) is what enters the xx equation).
+Numerically, with random \((x,g,\rho,P,\kappa,l)\) the difference between the derived expression and the paper's version with \(\rho\) is nonzero
+(order 0.1 to 30 in the samples I drew), while the version with \(P\) agrees to about \(10^{-15}\).
+Whether the published figures used \(P\) or \(\rho\) cannot be told from the text alone. The two agree only when \(\rho=P\), which is not the case for the polytrope.
+</div>
+
+<h2>8. Merging into two ODEs with the equation of state</h2>
+<p>Let \(P=k\rho^{1+1/n}\) (Eq. 6), so \(P'=k(1+\tfrac1n)\rho^{1/n}\rho'\), and write \(\kappa\equiv\kappa_G l^2\).</p>
+\[
+g' = \frac{g^3\tan x}{2}\Big[\kappa\rho-\csc^2x+\frac{2}{g^2}+\frac{1}{g^2\sin^2x}-2\Big],
+\]
+\[
+\rho' = -\frac{\rho^{\,1-1/n}\,\big(1+k\rho^{1/n}\big)}{k\,(1+1/n)}
+\Big[g^2\tan x\Big(1+\frac{\kappa}{2}k\rho^{1+1/n}\Big)+\frac{g^2-1}{2\sin x\cos x}\Big].
+\]
+<p><b>For \(n=1\)</b> (\(P=k\rho^2\)), the factor \(\rho^{1-1/n}\) is 1 and the system is regular at the surface:</p>
+\[
+\boxed{\;
+\begin{aligned}
+g' &= \frac{g^3\tan x}{2}\Big[\kappa\rho-\csc^2x+\frac{2}{g^2}+\frac{1}{g^2\sin^2x}-2\Big],\\
+\rho' &= -\frac{1+k\rho}{2k}\Big[g^2\tan x\Big(1+\frac{\kappa k\rho^2}{2}\Big)+\frac{g^2-1}{2\sin x\cos x}\Big].
+\end{aligned}\;}
+\]
+<p>With \(l=1\), \(\kappa_G=8\pi\) (so \(G=1\)), \(k=1\) (the values used for the paper's figures).</p>
+
+<h2>9. Boundary conditions</h2>
+<h3>Origin</h3>
+<p>Regularity requires \(g(0)=1\) and, as you noted, \(\rho\) even in \(x\), so \(\rho'(0)=0\). Expanding Eq. (4) with \(g=1+a x^2+\dots\) and \(\rho(0)=\rho_c\):</p>
+\[
+\kappa\rho_c-6a+O(x^2)=0\;\;\Rightarrow\;\; g(x)=1+\frac{\kappa\rho_c}{6}x^2+O(x^4).
+\]
+<p>Inserting this in Eq. (5):</p>
+\[
+P'\;=\;-(\rho_c+P_c)\Big(1+\frac{\kappa P_c}{2}+\frac{\kappa\rho_c}{6}\Big)x+O(x^3),
+\]
+<p>so \(\rho'(0)=0\) comes out automatically, and the apparent \(0/0\) singularities at \(x=0\) cancel. This is consistent with your remark. Numerically, evaluating at the origin needs the series (or a staggered grid), but the two equations themselves do not blow up.</p>
+<h3>Surface</h3>
+<p>\(\rho(x_S)=0\), hence \(P(x_S)=0\). For \(n=1\), \(\rho'(x_S)\neq0\), so \(\rho\) crosses zero linearly and \(x_S\) is well defined.</p>
+<h3>Exterior and the mass (Eq. 7)</h3>
+<p>For \(x>x_S\) put \(\rho=0\) in Eq. (4) and let \(h=1/g^2\), \(u=h-1\). Then \(-\frac{2c}{s}\frac{g'}{g^3}=\frac{c}{s}h'\), and</p>
+\[
+\frac{c}{s}u'+u\Big(\frac1{s^2}+2\Big)=0\;\Rightarrow\;\frac{u'}{u}=-\frac{1+2s^2}{sc}
+\;\Rightarrow\; u=-\mu\frac{\cos^3x}{\sin x}.
+\]
+<p>Thus \(g^{-2}=1-\mu\cos^3x/\sin x\), which is the Schwarzschild–AdS solution in these coordinates. Identifying \(\mu=2GM\) reproduces Eq. (7):
+\(g(x_S)=\big(1-2GM\cos^3x_S/\sin x_S\big)^{-1/2}\). Inverted,
+\(M=\dfrac{(1-g_S^{-2})\sin x_S}{2G\cos^3x_S}\). This is the mass to output for each solution.</p>
+
+<h2>10. Numerical verification summary</h2>
+<table>
+<tr><th>Check</th><th>Result</th></tr>
+<tr><td>\(G^t{}_t\), \(G^x{}_x\), \(G^\theta{}_\theta\) closed forms vs. direct Ricci computation</td><td>agree (≤ 5e-15)</td></tr>
+<tr><td>tt equation vs. paper's Eq. (4)</td><td>agree (≤ 2e-15)</td></tr>
+<tr><td>xx + conservation vs. Eq. (5) with <b>P</b></td><td>agree (≤ 4e-15)</td></tr>
+<tr><td>xx + conservation vs. Eq. (5) with <b>ρ</b> (as printed)</td><td>differ</td></tr>
+<tr><td>\(\nabla_\mu T^{\mu x}\) = \(\frac{c^2}{l^2g^2}[P'+(\rho+P)(f'/f+\tan x)]\)</td><td>identity holds</td></tr>
+<tr><td>Series at origin: \(\kappa\rho_c-6a=0\); \(P'\propto -x\,(1+\kappa P_c/2+a)\)</td><td>confirmed</td></tr>
+</table>
+
+<h2>11. Implementation notes</h2>
+<ul>
+<li>Use the \(n=1\) boxed system above, with \(P\) in the bracket of the \(\rho'\) equation.</li>
+<li>\(f\) drops out of the profile problem: \(g\) and \(\rho\) are enough. \(f\) can be recovered afterwards from \((*)\) if needed.</li>
+<li>Free parameter: \(\rho_c\) (or \(M\) through Eq. 7). Unknown surface radius \(x_S\), mapped to a fixed grid by \(x=x_S s\).</li>
+<li>Midpoint evaluation on a grid avoids evaluating \(\tan x\) and \(1/\sin x\) exactly at \(x=0\).</li>
+</ul>
+
+
+<h1 id="part2" style="margin-top:3rem">Part II: radial stability of the static stars</h1>
+<p class="small">Setup follows Sec. II.C of Lopes &amp; Okawa (<code>Static_AdS.pdf</code>), Eqs. (11)–(14). Every step below was
+checked symbolically with sympy (<code>derivation/</code>), and the final equation was checked numerically (Sec. 20).</p>
+
+<h2>12. Summary</h2>
+<div class="box">
+<b>Result.</b> For a Lagrangian displacement \(\zeta(t,x)=\xi(x)e^{i\omega t}\) the radial perturbation equation is
+\[
+\frac{h\,g^2}{f^2}\,\zeta_{tt}=\big(\Theta Q\big)'+\sigma\,\Theta Q-\beta\,\zeta,\qquad Q=\zeta'+K\zeta ,
+\]
+a Sturm–Liouville problem for \(\omega^2\) with the variational form
+\(\;\omega^2=\dfrac{\int E\,(\Theta Q^2+\beta\,\xi^2)\,dx}{\int E\,W\,\xi^2\,dx}\;\) (all symbols defined below).
+For \(n=1,\ k=1\) the lowest eigenvalue \(\omega_0^2\) changes sign at \(\rho_c=0.89226\), which is exactly where \(M(\rho_c)\) has its maximum.
+</div>
+
+<h2>13. Notation and background</h2>
+<p>Metric (paper Eq. 1) and fluid, with \(\kappa\equiv\kappa_G l^2\) (\(=8\pi\) for \(l=1\)), \(s=\sin x\), \(c=\cos x\), a prime \(=d/dx\):</p>
+\[
+ds^2=\frac{l^2}{\cos^2x}\Big(-f^2dt^2+g^2dx^2+\sin^2x\,d\Omega^2\Big),\qquad u^\mu=\Big(\frac{\cos x}{l f},0,0,0\Big).
+\]
+<p>The static equations (derived and checked in Sections 4–7 above) are</p>
+\[
+\begin{aligned}
+\kappa\rho_0&=\frac{2c}{g_0^3 s}\,g_0'+\csc^2x-\frac{2}{g_0^2}-\frac{1}{g_0^2s^2}+2, &&\text{(S1: tt)}\\
+a&\equiv\frac{f_0'}{f_0}+\tan x=g_0^2\tan x\Big(1+\frac{\kappa P_0}{2}\Big)+\frac{g_0^2-1}{2sc}, &&\text{(S2: xx)}\\
+P_0'&=-(\rho_0+P_0)\,a. &&\text{(S3: conservation)}
+\end{aligned}
+\]
+<p>Shorthands used throughout:</p>
+\[
+h\equiv\rho_0+P_0,\qquad c_s^2\equiv\frac{dP}{d\rho}=k\Big(1+\frac1n\Big)\rho_0^{1/n},\qquad \Theta\equiv c_s^2\,h=\Gamma P_0 .
+\]
+<p>The background \(f_0\) is fixed by (S2) and the exterior Schwarzschild–AdS matching \(f_0(x_S)=1/g_0(x_S)\), so that \(f\to1\) at the boundary and \(\omega\) is the frequency conjugate to boundary time.</p>
+
+<h2>14. Perturbation ansatz</h2>
+<p>As in the paper, the perturbation keeps the same coordinate gauge (the angular part \(\sin^2x\) is unperturbed, so the areal radius \(l\tan x\) labels the shells). With a small parameter \(\epsilon\):</p>
+\[
+f=f_0+\epsilon f_1,\quad g=g_0+\epsilon\,\delta g,\quad \rho=\rho_0+\epsilon\,\delta\rho,\quad P=P_0+\epsilon\,\delta P,\quad
+u^x=v\,u^t,\ \ v=\epsilon\,\partial_t\zeta ,
+\]
+<p>where \(\zeta\) is the Lagrangian displacement (the fluid element at \(x\) sits at \(x+\epsilon\zeta\)). Normalisation gives \(u^t=\cos x/(l f)\) to first order. The paper's remark that the \(tt\) and \(xx\) equations keep their static form while \(G_{tx}=\kappa T_{tx}\) carries the time dependence is what we find below.</p>
+<p>The Einstein tensor was computed for general \(f(t,x),g(t,x)\), and \(E_{\mu\nu}=G_{\mu\nu}+\Lambda g_{\mu\nu}-\kappa_G T_{\mu\nu}\) was differentiated with respect to \(\epsilon\) at \(\epsilon=0\) (background equations used to eliminate \(f_0',g_0',P_0',\rho_0'\)).</p>
+
+<h2>15. First-order equations</h2>
+<p><b>(L1) momentum constraint, \(tx\).</b> At first order \(T_{tx}=(\rho_0+P_0)u_tu_x\), and the equation reduces to \(\partial_t\delta g=-\tfrac{\kappa}{2}h\,g_0^3\tan x\,\partial_t\zeta\), hence</p>
+\[
+\delta g=-\frac{\kappa}{2}\,h\,g_0^3\tan x\;\zeta .
+\]
+<p><b>(L2) energy constraint, \(tt\).</b> This is the linearised Eq. (4). Inserting (L1):</p>
+\[
+\delta\rho=-h\,Q-\rho_0'\,\zeta,\qquad Q\equiv\zeta'+K\zeta,\qquad
+K\equiv3\tan x+2\cot x+\frac{g_0'}{g_0}-\frac{\kappa}{2}\,h\,g_0^2\tan x .
+\]
+<p>Meaning: the Lagrangian density change is \(\Delta\rho=\delta\rho+\rho_0'\zeta=-h\,Q\), with \(Q\) the fractional change of proper volume. Indeed \(3\tan x+2\cot x+g_0'/g_0=(\ln\sqrt\gamma)'\) for the spatial volume element \(\sqrt\gamma=g\sin^2x/\cos^3x\), and the last term of \(K\) is \(\delta g/(g_0\zeta)\).</p>
+<p><b>(L3) pressure constraint, \(xx\).</b></p>
+\[
+\Big(\frac{f_1}{f_0}\Big)'=g_0\,\delta g\Big[2\tan x\Big(1+\frac{\kappa P_0}{2}\Big)+\frac{1}{sc}\Big]+\frac{\kappa}{2}\,g_0^2\tan x\;\delta P .
+\]
+<p><b>(L4) Euler equation, \(\nabla_\mu T^{\mu x}=0\).</b></p>
+\[
+\frac{h\,g_0^2}{f_0^2}\,\zeta_{tt}+\delta P'+(\delta\rho+\delta P)\,a+h\Big(\frac{f_1}{f_0}\Big)'=0 .
+\]
+<p>The inertial term has weight \(h\,g_0^2/f_0^2\) (enthalpy density times \(g_{xx}/|g_{tt}|\)); \(a=\Gamma^t{}_{tx}\) is the gravitational acceleration.</p>
+
+<h2>16. Equation of state and elimination</h2>
+<p>For a barotropic polytrope the perturbations obey \(\delta P=c_s^2\,\delta\rho\), with \(c_s^2=dP/d\rho\) and \(\rho\) the total energy density, as in the paper ("Two Einstein equations and the equation of state link the perturbative quantities with the Lagrange displacement"). The Lagrangian pressure change is then, using \(P_0'=c_s^2\rho_0'\),</p>
+\[
+\Delta p\equiv\delta P+P_0'\zeta=c_s^2\big(\delta\rho+\rho_0'\zeta\big)=-\,\Theta\,Q .
+\]
+<p>Insert \(\delta\rho,\ \delta P=c_s^2\delta\rho,\ \delta g\) and (L3) into (L4). The metric perturbation \(f_1\) drops out completely (checked symbolically), and the equation collapses to</p>
+\[
+\boxed{\;\frac{h\,g_0^2}{f_0^2}\,\zeta_{tt}=(\Theta Q)'+\sigma\,\Theta Q-\beta\,\zeta\;}
+\]
+<p>with</p>
+\[
+\sigma=a+\frac{\kappa}{2}\,h\,g_0^2\tan x,
+\]
+\[
+\beta=-\frac{h}{4T^2}\Big[\kappa^2P^2T^4g^4+6\kappa PT^4g^4+2\kappa PT^4g^2+2\kappa PT^2g^4+2\kappa PT^2g^2+9T^4g^4+6T^4g^2-7T^4+6T^2g^4+12T^2g^2-14T^2+g^4+6g^2-7\Big],
+\]
+<p>where \(T=\tan x\), \(g=g_0\), \(P=P_0\). The term \(\beta\) does not depend on \(c_s^2\): it is the purely gravitational part of the restoring force. It is finite at \(x=0\) because \(g^4+6g^2-7\to8(g^2-1)\propto x^2\).</p>
+
+<h2>17. Sturm–Liouville form and the paper's Eq. (13)</h2>
+<p>Write \(\zeta=\xi(x)e^{i\omega t}\), so \(\zeta_{tt}=-\omega^2\xi\). Expanded in \(\xi\):</p>
+\[
+\Theta\,\xi''+\big[\Theta'+\Theta(K+\sigma)\big]\xi'+V\xi+\omega^2\frac{h g^2}{f^2}\,\xi=0,\qquad V=(\Theta K)'+\sigma\Theta K-\beta .
+\]
+<p>The first-derivative coefficient is \(\Theta'+\Theta\,(\ln E)'\) with</p>
+\[
+(\ln E)'=K+\sigma=a+3\tan x+2\cot x+\frac{g'}{g}\quad\Longrightarrow\quad
+\boxed{E=\frac{f\,g\,\sin^2x}{\cos^4x}}
+\]
+<p>(the \(\pm\tfrac\kappa2hg^2\tan x\) terms cancel, and \(a=(\ln f)'+\tan x\)). Multiplying by \(E\) gives the self-adjoint form</p>
+\[
+\big(E\,\Theta\,\xi'\big)'+E\,V\,\xi+\omega^2\,E\,W\,\xi=0,\qquad W\equiv\frac{h\,g^2}{f^2}.
+\]
+<p>Using \(EV=(E\Theta K)'-E\Theta K^2-E\beta\) this is equivalent to \(\;(E\Theta Q)'-K\,E\Theta Q-E\beta\,\xi+\omega^2EW\xi=0\). Multiplying by \(\xi\) and integrating (boundary terms vanish, see Sec. 18) gives the variational principle</p>
+\[
+\boxed{\;\omega^2=\frac{\displaystyle\int_0^{x_S}E\,\big(\Theta\,Q^2+\beta\,\xi^2\big)\,dx}{\displaystyle\int_0^{x_S}E\,W\,\xi^2\,dx}\;}
+\]
+<p>The compressional term \(\Theta Q^2\ge0\) is stabilising, \(\beta<0\) (gravity) destabilising; \(\omega^2<0\) (imaginary \(\omega\)) signals instability.</p>
+
+<h3>Mapping to the paper's Eq. (13)–(14)</h3>
+<p>The paper writes \(A\xi''+B\xi'+C\xi-\omega^2\xi=0\), i.e. \(\mathcal M\xi=\omega^2\xi\). Dividing by the weight \(W\):</p>
+\[
+A=-\frac{f^2c_s^2}{g^2},\qquad
+B=A\,\frac{(E\Theta)'}{E\Theta}=-\frac{f^2c_s^2}{g^2}\Big[\frac{\Theta'}{\Theta}+a+3\tan x+2\cot x+\frac{g'}{g}\Big],\qquad
+C=-\frac{f^2}{g^2h}\,V .
+\]
+<p>\(A<0\) because \(\omega^2\xi=-(\ldots)\xi''\) is the usual positive operator \(-d^2/dx^2\).
+The matrix of Eq. (14) is the discretisation of this operator; I use a symmetric finite-element version of the self-adjoint form instead, which is better conditioned (<code>static_ads/stability.py</code>).</p>
+
+<h3>Stability test</h3>
+<p>Discretising on the \(N+1\) grid points with \(\xi_0=0\) turns the problem into the matrix eigenproblem of the paper's Eq. (14),
+\(\mathcal M\,\eta=\omega^2\eta\), where \(\mathcal M=\mathsf{Mass}^{-1}\mathsf{K}\) and \(\mathsf K,\mathsf{Mass}\) are the symmetric
+finite-element matrices of the numerator and denominator of the variational principle. The code computes <b>all</b> eigenvalues
+(<code>stability.spectrum</code>), and the star is declared <b>unstable if any \(\omega^2<-10^{-6}\)</b>; <code>stability.stability</code>
+returns <code>(stable, lowest ω², number of negative eigenvalues)</code>. Because \(\mathsf K\) and \(\mathsf{Mass}\) are symmetric with
+\(\mathsf{Mass}\) positive definite, all eigenvalues are real and the negative ones are counted reliably. For \(n=1,\ k=1\) the star is
+stable below \(\rho_c\approx0.89\) and has exactly one negative eigenvalue above it.</p>
+
+<h2>18. Boundary conditions</h2>
+<p>The radial problem is posed on \(0\le x\le x_S\). The two ends behave very differently: the centre is a regular point of the equation, the surface is a <i>singular</i> point, and that is what decides which condition applies there.</p>
+
+<h3>18.1 Centre</h3>
+<p>\(\xi(0)=0\). Near \(x=0\), \(K\to2/x\), so \(Q\to\xi'+2\xi/x\), and the regular solution is \(\xi\propto x\). By spherical symmetry the fluid at the origin cannot move, so this is a genuine condition on \(\xi\).</p>
+
+<h3>18.2 Surface: a free boundary, and the pressure is what must vanish</h3>
+<p>The paper's condition is \(\delta P|_{x_S}=0\). In terms of the Lagrangian pressure change of a fluid element,</p>
+\[
+\Delta p=\delta P+P_0'\,\zeta=-\Theta\,Q ,\qquad\text{and}\qquad P_0'=-h\,a\;\to\;0\ \text{ at the surface,}
+\]
+<p>so \(\delta P\) and \(\Delta p\) coincide there and both must vanish. Physically: outside the star there is vacuum, which cannot supply any pressure. A fluid element on the surface has zero pressure before the perturbation and must have zero after, so \(\Delta p=0\). <b>Nothing is required of the displacement \(\xi\) itself</b>, because the surface is free to move. A nonzero \(\xi(x_S)\) is the amplitude with which the stellar radius oscillates, and for the fundamental mode (collapse or expansion of the whole star) it has to be nonzero. Forcing \(\xi(x_S)=0\) would clamp the surface like a rigid wall, a different problem.</p>
+
+<h3>18.3 Why a finite \(\xi(x_S)\) is consistent: local analysis at the surface</h3>
+<p>Let \(s=x_S-x\to0\). The static equations give \(w=\rho^{1/n}\) crossing zero linearly, \(w\simeq a_S\,s/\big(k(n+1)\big)\) with \(a_S=a(x_S)\) (Sec. 8). Hence the coefficients of the radial equation scale as</p>
+\[
+h=\rho+P\propto s^{\,n},\qquad c_s^2=k\Big(1+\frac1n\Big)w\propto s,\qquad \Theta=c_s^2h\propto s^{\,n+1},\qquad W\propto s^{\,n},\qquad \beta,\,V\propto s^{\,n},
+\]
+<p>while \(E,f,g,K\) are regular. Write \(\Theta\simeq\Theta_1s^{n+1}\) and \(E(V+\omega^2W)\simeq C_0\,s^{n}\). With \(d/dx=-d/ds\) the equation \((E\Theta\xi')'+E(V+\omega^2W)\xi=0\) becomes, to leading order (primes now \(d/ds\)),</p>
+\[
+s\,\xi''+(n+1)\,\xi'+\lambda\,\xi=0,\qquad \lambda=\frac{C_0}{E_S\Theta_1}\ \text{(a finite constant)} .
+\]
+<p>This is a regular singular point. Trying \(\xi\sim s^\alpha\) gives the indicial equation \(\alpha(\alpha+n)=0\), so the two local solutions are</p>
+\[
+\xi_{\rm reg}=\xi_S\Big[1-\frac{\lambda\,s}{n+1}+\dots\Big]\quad(\alpha=0),\qquad
+\xi_{\rm sing}\propto s^{-n}\quad(\alpha=-n)
+\]
+<p>(with a logarithm for integer \(n\)). The regular branch has a finite displacement \(\xi_S\) and a finite slope fixed by \(\lambda\); the amplitude \(\xi_S\) is just the overall normalisation of the eigenfunction. For the regular branch \(Q\) stays finite, so</p>
+\[
+\Delta p=-\Theta Q\ \propto\ s^{\,n+1}\ \to\ 0 .
+\]
+<p>The condition \(\Delta p=0\) is therefore satisfied automatically by the regular branch, and the vanishing of \(\Delta p\) does not need \(\xi_S=0\).</p>
+
+<h3>18.4 Why the singular branch is excluded: finite energy</h3>
+<p>For \(\xi_{\rm sing}\propto s^{-n}\) we have \(Q\simeq-\xi_s\propto s^{-n-1}\), and the two energies behave as</p>
+\[
+\begin{aligned}
+E_{\rm kin}&\propto\int E\,W\,\xi^2\,dx\sim\int s^{\,n}s^{-2n}\,ds=\int s^{-n}ds,\\[2pt]
+E_{\rm comp}&\propto\int E\,\Theta\,Q^2dx\sim\int s^{\,n+1}s^{-2n-2}\,ds=\int s^{-n-1}ds .
+\end{aligned}
+\]
+<p>The compressional energy diverges for every \(n>0\) (the kinetic one also diverges for \(n\ge1\), logarithmically at \(n=1\)). A physical mode must have finite energy, so \(\xi_{\rm sing}\) is discarded and only the finite \(\xi_{\rm reg}\) remains. This is the real content of "\(\delta P|_{x_S}=0\)": it selects the regular solution, and no further condition on \(\xi\) is needed. It is also why the discretised problem converges without any condition imposed at the outer end (Sec. 20); the weak form's natural boundary condition is \(\Delta p=0\).</p>
+<p>The regular branch is cheap because the fluid there is light: both energies carry a factor of the density, so a large displacement of the outer layers costs very little. This is why mode amplitudes normally grow towards the surface.</p>
+
+<h3>18.5 Numerical illustration</h3>
+<p>The figure shows the fundamental mode of two stars (\(n=1,\ \rho_c=0.3\), stable, and \(n=3,\ \rho_c=0.5\), unstable), as a function of the distance \(s\) to the surface (the surface is at the right edge).</p>
+<img src="figures/surface_behaviour.png" alt="Behaviour of the fundamental radial mode near the stellar surface for n=1 and n=3" width="1000">
+<p class="small"><a href="figures/surface_behaviour.svg">Vector version (zoomable)</a>. <b>Left:</b> the computed displacement tends to a finite value, while the excluded solution \(\propto s^{-n}\) (dashed, scaled to agree at \(s=0.2\)) blows up. <b>Middle:</b> \(|\xi|\) stays finite, while \(h\), \(\Theta\) and the Lagrangian pressure change \(|\Delta p|=\Theta|Q|\) fall off as the powers \(s^n\), \(s^{n+1}\), \(s^{n+1}\) predicted above. (The last few grid cells before the surface deviate slightly from the straight line: a discretisation effect.) <b>Right:</b> the energy accumulated between \(s_{\min}\) and \(s=0.3\). For the physical mode it saturates, and for the excluded solution it grows without bound as \(s_{\min}\to0\).</p>
+<table>
+<tr><th>star</th><th>grid points from surface</th><th>\(\xi\)</th><th>\(Q\)</th><th>\(\Theta\)</th><th>\(\Delta p\) (Lagrangian)</th><th>\(\delta P\) (Eulerian)</th></tr>
+<tr><td rowspan="3">\(n=1,\ \rho_c=0.3\)</td><td>300</td><td>0.83</td><td>5.5</td><td>3×10⁻²</td><td>−1.6×10⁻¹</td><td>−2.8×10⁻²</td></tr>
+<tr><td>30</td><td>0.99</td><td>4.9</td><td>2.6×10⁻⁴</td><td>−1.3×10⁻³</td><td>1.3×10⁻²</td></tr>
+<tr><td>3</td><td>1.00</td><td>5.1</td><td>1.9×10⁻⁶</td><td>−9×10⁻⁶</td><td>1.2×10⁻³</td></tr>
+<tr><td rowspan="3">\(n=3,\ \rho_c=0.5\)</td><td>300</td><td>0.77</td><td>2.1</td><td>3×10⁻³</td><td>−7×10⁻³</td><td>1×10⁻²</td></tr>
+<tr><td>30</td><td>0.32</td><td>1.4</td><td>6×10⁻⁷</td><td>−9×10⁻⁷</td><td>1.5×10⁻⁵</td></tr>
+<tr><td>3</td><td>0.28</td><td>1.5</td><td>4×10⁻¹¹</td><td>−6×10⁻¹¹</td><td>1×10⁻⁸</td></tr>
+</table>
+
+<h3>18.6 Lagrangian versus Eulerian quantities at the surface</h3>
+<p>The Eulerian pressure change \(\delta P=\Delta p-P_0'\xi\) also tends to zero at the surface for every \(n\), because both \(\Delta p\to0\) and \(P_0'=-ha\to0\); in the table, \(\delta P\) follows \(-P_0'\xi\) there. The Eulerian density change behaves differently: \(\delta\rho=\Delta\rho-\rho_0'\xi\), and \(\Delta\rho=-hQ\to0\), so \(\delta\rho(x_S)=-\rho_0'(x_S)\,\xi_S\). For \(n=1\) this is nonzero, because the moving surface sweeps through a finite density gradient. For \(n>1\) the gradient vanishes at the surface and \(\delta\rho\to0\) too.</p>
+
+<h3>18.7 What would be inconsistent, and a caveat</h3>
+<ul>
+<li>A <i>nonzero</i> \(\Delta p\) at the surface would put a finite pressure on a boundary with vacuum behind it, an unbalanced force. This is excluded.</li>
+<li>Because \(\rho_0\to0\) at the surface, the Eulerian ratio \(\delta\rho/\rho_0\) is not small in the outermost layer, so the linearisation is least accurate there. The Lagrangian quantities (\(\xi,\ \Delta\rho/\rho,\ \Delta p/P\)) stay well behaved. This is the usual reason stellar-pulsation theory is written in Lagrangian variables. It does not affect the eigenvalues, which are set by the bulk of the star, but the Eulerian \(\delta\rho\) profile should not be trusted literally at the surface.</li>
+</ul>
+<h3>18.8 Exterior</h3>
+<p>For \(x>x_S\) the vacuum has no fluid, so no radial perturbation of the metric is excited at this order (Birkhoff).</p>
+
+<h2>19. Assumptions to be aware of</h2>
+<ul>
+<li><b>Perturbation law.</b> I used \(\delta P=c_s^2\delta\rho\) with \(c_s^2=dP/d\rho\) from the static EOS (Eq. 6), as the paper's text indicates. If instead an adiabatic law with fixed rest-mass density were intended, \(\Gamma\) would differ and \(\Theta=\Gamma P_0\) would change. Since the model has a single barotropic EOS, I consider the barotropic choice the consistent one.</li>
+<li><b>Frequency normalisation.</b> \(\omega\) is conjugate to the coordinate \(t\) with \(f\to1\) at \(x=\pi/2\) (boundary time). Different normalisations rescale \(\omega^2\) but not its sign.</li>
+<li>Eq. (5) in the paper has \(\rho\) where the derivation gives \(P\) (see Section 7); I use \(P\) in the background, which enters here through \(a\).</li>
+</ul>
+
+<h2>20. Verification of the stability equation</h2>
+<h3>Symbolic (sympy, <code>derivation/</code>)</h3>
+<table>
+<tr><th>Check</th><th>Result</th></tr>
+<tr><td>(L1): \(E_{tx}\) with \(\delta g\) from above</td><td>vanishes identically</td></tr>
+<tr><td>(L2): \(E_{tt}\) with \(\delta\rho=-hQ-\rho_0'\zeta\)</td><td>vanishes (random background points, ≤ 4e-14)</td></tr>
+<tr><td>(L3): \(E_{xx}\) with the \((f_1/f_0)'\) above</td><td>vanishes (≤ 6e-13)</td></tr>
+<tr><td>Linearised \(\nabla_\mu T^{\mu x}\) vs. (L4)</td><td>proportional with a common point-dependent factor for all of \(\zeta,\zeta',\zeta'',\zeta_{tt}\)</td></tr>
+<tr><td>\(f_1\)-independence of the Euler equation after using (L3)</td><td>holds</td></tr>
+<tr><td>Collapse to \((\Theta Q)'+\sigma\Theta Q-\beta\zeta\) (coefficients of \(\zeta'',\zeta',\zeta\))</td><td>exact; \(\beta\) has no \(c_s^2\) or \(c_s^{2\prime}\) dependence</td></tr>
+</table>
+<p>Scripts, run in this order from <code>derivation/</code> (needs sympy): <code>linearize.py</code> then <code>check_reduction.py</code>.</p>
+
+<h3>Numerical (<code>static_ads/stability.py</code>, n = 1, k = 1)</h3>
+<p><b>Turning-point criterion.</b> Along a sequence of equilibria, a mode of a static perturbation (\(\omega=0\)) must appear where \(M(\rho_c)\) is extremal. Finding both numerically with \(N=800\):</p>
+<table>
+<tr><th>Quantity</th><th>\(\rho_c\)</th></tr>
+<tr><td>\(\omega_0^2=0\)</td><td>0.89226</td></tr>
+<tr><td>\(dM/d\rho_c=0\) (\(M_{\max}=0.190024\))</td><td>0.89226</td></tr>
+</table>
+<p>They agree to the 5 digits I resolved. This is a non-trivial check of the whole chain, since \(\omega^2\) comes from the perturbation equation and \(M\) from the static equations.</p>
+<p><b>Convergence</b> of \(\omega_0^2\) at \(\rho_c=0.5\) (second order in the grid):</p>
+<table>
+<tr><th>N</th><th>100</th><th>200</th><th>400</th><th>800</th><th>1600</th><th>3200</th></tr>
+<tr><td>\(\omega_0^2\)</td><td>1.744278</td><td>1.744735</td><td>1.744846</td><td>1.744873</td><td>1.744880</td><td>1.744881</td></tr>
+</table>
+<p><b>Family.</b> For \(\rho_c<0.89\) all modes have \(\omega^2>0\) (e.g. \(\rho_c=0.01\): 5.1, 14.4, 27.9); the fundamental mode becomes unstable at the mass maximum and stays so up to \(\rho_c=20\), while the first excited mode remains stable.</p>
+<img src="figures/stability_n1_k1.png" alt="omega^2 of the three lowest radial modes versus rho_c, n=1, k=1" width="800">
+
+<h2>21. Files</h2>
+<ul>
+<li><code>static_ads/stability.py</code>: builds the finite-element problem from a converged W4 star and returns the lowest \(\omega^2\) and the number of negative ones. <code>python -m static_ads.stability n k</code> scans \(\rho_c\) and writes <code>data/stability/stability_n&lt;n&gt;_k&lt;k&gt;.dat/.gp/.png</code>.</li>
+<li><code>derivation/linearize.py</code>, <code>derivation/check_reduction.py</code>: the symbolic derivation and the check of the reduction.</li>
+<li><code>static_ads/tools/surface_figure.py</code>: data and figure (<code>figures/surface_behaviour.png/.svg</code>) for Sec. 18.</li>
+</ul>
+
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Generated data: solutions, scans, figures, interactive pages (see static_ads/paths.py)
+data/
+
+# Cache written by derivation/linearize.py
+derivation/res.txt
+
+# Draft of the paper (contains co-author comments); remove this line to track it
+docs/paper/
