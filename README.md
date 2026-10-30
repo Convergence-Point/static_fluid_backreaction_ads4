@@ -105,4 +105,3 @@ python check_reduction.py           # checks the reduction to the Sturm-Liouvill
 
 - The W4 step uses an *unpivoted* UDL decomposition. The order of unknowns and equations matters (a zero
   pivot otherwise); the choice used in `star.py` is explained in `Star`/`unpack`.
-- `docs/paper/` is git-ignored because the draft contains co-author comments.

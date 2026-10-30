@@ -15,5 +15,3 @@ data/
 # Cache written by derivation/linearize.py
 derivation/res.txt
 
-# Draft of the paper (contains co-author comments); remove this line to track it
-docs/paper/
